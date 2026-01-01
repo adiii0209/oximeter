@@ -4,7 +4,7 @@ import BottomOximeterVideo from '../components/BottomOximeterVideo';
 
 export default function OxygenSaturation() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen" style={{ backgroundColor: '#FDFDFD' }}>
       {/* Top curved header */}
       <div className="relative overflow-hidden">
         <div className="bg-peach h-28 rounded-b-[120px]" />
