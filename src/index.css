@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom utilities and animations */
+@layer utilities {
+  @keyframes finger-insert {
+    0%, 100% { transform: translateY(-6px); }
+    50% { transform: translateY(10px); }
+  }
+  @keyframes pulse-soft {
+    0%, 100% { opacity: .8; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.03); }
+  }
+  .animate-finger { animation: finger-insert 2.2s ease-in-out infinite; }
+  .animate-pulse-soft { animation: pulse-soft 2.4s ease-in-out infinite; }
+  .shadow-sensor { box-shadow: 0 8px 24px rgba(0,0,0,0.12), inset 0 2px 8px rgba(0,0,0,0.15); }
+  .bg-peach { background-color: #fcefe9; }
+}
+
+/* Page background */
+body { background-color: white; color: #0f172a; }
