@@ -2,18 +2,22 @@ import React from 'react';
 
 /*
   Bottom video logo: renders a provided MP4 animation showing a finger inserting
-  into an oximeter. Place your MP4 file at public/oximeter.mp4 (or change the
-  src prop to your desired path). The video is muted/autoplaying/looping and
-  uses playsInline so it will autoplay on mobile too.
+  into an oximeter.
 */
-export default function BottomOximeterVideo({ src = '/oximeter.mp4', width = 240 }) {
+export default function BottomOximeterVideo({ src = '/oximeter.mp4', width = 240, blend = true, className = '' }) {
+  const videoStyle = {
+    background: 'transparent',
+    ...(blend ? { mixBlendMode: 'multiply' } : {}),
+  };
+
   return (
-    <div className="w-full flex justify-center mt-8">
+    <div className={`w-full flex justify-center mt-6 animate-fade-in-up ${className}`}>
       <div className="relative" style={{ width }}>
-        <div className="rounded-xl overflow-hidden">
+        <div className="overflow-hidden bg-transparent">
           <video
             src={src}
             className="w-full h-auto block"
+            style={videoStyle}
             autoPlay
             loop
             muted

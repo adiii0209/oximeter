@@ -1,53 +1,28 @@
 import React from 'react';
 
-/*
-  Animated finger icon that gently moves up/down to suggest inserting the finger
-  into the pulse oximeter sensor. Uses the `.animate-finger` utility defined in
-  src/index.css
-*/
-export default function FingerLogo({ size = 72 }) {
+// Animated fingerprint icon — subtle pulse and inner-line shimmer.
+export default function FingerLogo({ size = 72, className = '' }) {
   return (
-    <div
-      className="animate-finger"
-      style={{ width: size, height: size }}
-      aria-hidden="true"
-      role="img"
-    >
+    <div className={className} style={{ width: size, height: size }} aria-hidden="true" role="img">
       <svg
         width={size}
         height={size}
-        viewBox="0 0 72 72"
-        fill="none"
+        viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
+        className="fingerprint-svg fp-svg"
       >
-        <defs>
-          <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#F7C27E" />
-            <stop offset="100%" stopColor="#E3A45F" />
-          </linearGradient>
-          <linearGradient id="shadow" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#000" stopOpacity="0.15" />
-            <stop offset="100%" stopColor="#000" stopOpacity="0" />
-          </linearGradient>
-        </defs>
+        <style>{`
+          .fp-svg { display: block; transform-origin: center; animation: fp-pulse 2200ms ease-in-out infinite; }
+          @keyframes fp-pulse { 0% { transform: scale(1); opacity: 0.95 } 50% { transform: scale(1.02); opacity: 1 } 100% { transform: scale(1); opacity: 0.95 } }
+        `}</style>
 
-        {/* Palm */}
-        <path d="M18 34c0-5 4-9 9-9h10c6 0 11 5 11 11v7c0 9-7 16-16 16-8 0-14-6-14-14v-11z" fill="url(#skin)"/>
-
-        {/* Index finger */}
-        <rect x="34" y="9" width="9" height="26" rx="4.5" fill="url(#skin)"/>
-        {/* Finger nail hint */}
-        <rect x="35.2" y="10" width="6.6" height="6" rx="3" fill="#FCE2C3"/>
-
-        {/* Other fingers (simplified) */}
-        <rect x="24" y="16" width="8" height="18" rx="4" fill="url(#skin)"/>
-        <rect x="17" y="20" width="7" height="16" rx="3.5" fill="url(#skin)"/>
-
-        {/* Thumb hint */}
-        <path d="M18 39c0-2 2-4 4-4h6c1.7 0 3 1.3 3 3v4c0 1.7-1.3 3-3 3h-5c-2.8 0-5-2.2-5-5z" fill="url(#skin)"/>
-
-        {/* Subtle bottom shadow */}
-        <ellipse cx="36" cy="65" rx="18" ry="4" fill="url(#shadow)"/>
+        <path d="M5.80688 18.5304C5.82459 18.5005 5.84273 18.4709 5.8613 18.4413C7.2158 16.2881 7.99991 13.7418 7.99991 11C7.99991 8.79086 9.79077 7 11.9999 7C14.209 7 15.9999 8.79086 15.9999 11C15.9999 12.017 15.9307 13.0186 15.7966 14M13.6792 20.8436C14.2909 19.6226 14.7924 18.3369 15.1707 17M19.0097 18.132C19.6547 15.8657 20 13.4732 20 11C20 6.58172 16.4183 3 12 3C10.5429 3 9.17669 3.38958 8 4.07026M3 15.3641C3.64066 14.0454 4 12.5646 4 11C4 9.54285 4.38958 8.17669 5.07026 7M11.9999 11C11.9999 14.5172 10.9911 17.7988 9.24707 20.5712"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
+        />
       </svg>
     </div>
   );

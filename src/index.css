@@ -1,22 +1,61 @@
+/* Global styles and custom utilities */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Custom utilities and animations */
-@layer utilities {
-  @keyframes finger-insert {
-    0%, 100% { transform: translateY(-6px); }
-    50% { transform: translateY(10px); }
-  }
-  @keyframes pulse-soft {
-    0%, 100% { opacity: .8; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.03); }
-  }
-  .animate-finger { animation: finger-insert 2.2s ease-in-out infinite; }
-  .animate-pulse-soft { animation: pulse-soft 2.4s ease-in-out infinite; }
-  .shadow-sensor { box-shadow: 0 8px 24px rgba(0,0,0,0.12), inset 0 2px 8px rgba(0,0,0,0.15); }
-  .bg-peach { background-color: #fcefe9; }
+/* Finger insert animation utility */
+@keyframes finger-insert {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
 }
+.animate-finger { animation: finger-insert 3s ease-in-out infinite; }
+.shadow-sensor { box-shadow: 0 8px 24px rgba(0,0,0,0.12), inset 0 2px 8px rgba(0,0,0,0.15); }
 
-/* Page background */
-body { background-color: white; color: #0f172a; }
+/* Soft pulse for sensor tile */
+@keyframes pulse-soft {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.015); }
+}
+.animate-pulse-soft { animation: pulse-soft 2.6s ease-in-out infinite; }
+
+/* Fade-in up entrance animation */
+@keyframes fade-in-up {
+  0% { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up { animation: fade-in-up .45s ease-out both; }
+
+/* Progress stripes animation */
+.progress-stripes {
+  background-image: linear-gradient(
+    45deg,
+    rgba(255,255,255,0.35) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255,255,255,0.35) 50%,
+    rgba(255,255,255,0.35) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 18px 18px;
+}
+@keyframes stripes {
+  0% { background-position: 0 0; }
+  100% { background-position: 18px 0; }
+}
+.animate-stripes { animation: stripes .8s linear infinite; }
+
+/* Smooth theme transition */
+.theme-transition * { transition: background-color .3s ease, color .3s ease, border-color .3s ease, fill .3s ease, stroke .3s ease, opacity .3s ease, transform .3s ease; }
+
+/* Modern glass and glow utilities */
+.glass-surface { background: linear-gradient(180deg, rgba(255,255,255,0.66), rgba(255,255,255,0.34)); backdrop-filter: saturate(160%) blur(14px); -webkit-backdrop-filter: saturate(160%) blur(14px); }
+/* Dark mode glass — richer, less grey, higher contrast */
+.glass-surface-dark { background: linear-gradient(180deg, rgba(15,23,42,0.50), rgba(15,23,42,0.36)); backdrop-filter: saturate(160%) blur(14px); -webkit-backdrop-filter: saturate(160%) blur(14px); }
+.ring-glow { box-shadow: 0 0 0 1px rgba(148,163,184,0.18), 0 12px 28px -12px rgba(2,6,23,0.50), inset 0 1px 0 rgba(255,255,255,0.16); }
+/* Improve default text contrast in dark mode */
+.dark body { color: #e5e7eb; }
+
+/* Soft measuring glow */
+@keyframes glow-soft { 0%, 100% { box-shadow: 0 0 0 0 rgba(234,88,12,0.25); } 50% { box-shadow: 0 0 0 10px rgba(234,88,12,0.12); } }
+.animate-glow-soft { animation: glow-soft 1.6s ease-in-out infinite; }
