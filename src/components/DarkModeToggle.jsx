@@ -5,13 +5,16 @@ export default function DarkModeToggle() {
   const initialized = useRef(false);
 
   useEffect(() => {
-    // Apply only an explicit saved preference. If none exists, do nothing so
-    // hosting does not unexpectedly force dark mode based on OS preference.
+    // Load saved preference. If none exists, explicitly default to light mode.
     const saved = localStorage.getItem('theme');
     if (saved === 'dark') {
       document.documentElement.classList.add('dark');
       setEnabled(true);
     } else if (saved === 'light') {
+      document.documentElement.classList.remove('dark');
+      setEnabled(false);
+    } else {
+      // No saved preference: ensure light theme and keep toggle off
       document.documentElement.classList.remove('dark');
       setEnabled(false);
     }
@@ -24,8 +27,8 @@ export default function DarkModeToggle() {
       document.documentElement.classList.remove('theme-transition');
     }, 300);
 
-    // Persist only after initial mount (user action). The button is disabled
-    // by design in this UI, so this avoids writing a default on first load.
+    // Persist and apply theme only after component has mounted to avoid
+    // writing a default on first render.
     if (initialized.current) {
       document.documentElement.classList.toggle('dark', enabled);
       localStorage.setItem('theme', enabled ? 'dark' : 'light');
@@ -36,14 +39,15 @@ export default function DarkModeToggle() {
     return () => clearTimeout(timer);
   }, [enabled]);
 
+  const toggle = () => setEnabled((v) => !v);
+
   return (
     <button
       aria-label="Toggle dark mode"
       role="switch"
       aria-checked={enabled}
-      aria-disabled="true"
-      disabled
-      className="group inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium border border-slate-200 bg-white/70 backdrop-blur-sm shadow-sm opacity-60 cursor-not-allowed dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 transition-colors"
+      onClick={toggle}
+      className="group inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium border border-slate-200 bg-white/70 backdrop-blur-sm shadow-sm transition-colors dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
     >
       <span className="relative inline-flex h-4 w-7 items-center rounded-full bg-slate-200 dark:bg-slate-800">
         <span className={`absolute inline-block h-3 w-3 rounded-full bg-white shadow transition-transform ${enabled ? 'translate-x-3.5' : 'translate-x-0.5'}`} />
