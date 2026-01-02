@@ -163,8 +163,17 @@ export default function OxygenSaturation() {
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <div className="h-10 flex items-center">
-                {/* Use the provided JPEG logo file placed at `public/reliv-logo.jpeg` */}
-                <img src="/reliv-logo.jpeg" alt="Reliv logo" className="h-8 w-auto" />
+                {/* Try user-provided JPEG first, fall back to the SVG if missing */}
+                <img
+                  src="/reliv-logo.jpeg"
+                  alt="Reliv logo"
+                  className="h-8 w-auto"
+                  onError={(e) => {
+                    // if JPEG is missing, fall back to the bundled SVG
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = '/reliv-logo.svg';
+                  }}
+                />
               </div>
               <div className="text-sm">
                 <div className="font-semibold text-slate-800 dark:text-slate-100">Reliv Health</div>

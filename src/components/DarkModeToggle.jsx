@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 export default function DarkModeToggle() {
   const [enabled, setEnabled] = useState(false);
+  const initialized = useRef(false);
 
   useEffect(() => {
+    // Apply only an explicit saved preference. If none exists, do nothing so
+    // hosting does not unexpectedly force dark mode based on OS preference.
     const saved = localStorage.getItem('theme');
     if (saved === 'dark') {
       document.documentElement.classList.add('dark');
@@ -11,31 +14,7 @@ export default function DarkModeToggle() {
     } else if (saved === 'light') {
       document.documentElement.classList.remove('dark');
       setEnabled(false);
-    } else {
-      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      document.documentElement.classList.toggle('dark', prefersDark);
-      setEnabled(prefersDark);
     }
-
-    const mq = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
-    const onChange = (e) => {
-      const hasSaved = localStorage.getItem('theme');
-      if (!hasSaved) {
-        const matches = e && typeof e.matches === 'boolean' ? e.matches : mq.matches;
-        document.documentElement.classList.toggle('dark', matches);
-        setEnabled(matches);
-      }
-    };
-    if (mq) {
-      if (mq.addEventListener) mq.addEventListener('change', onChange);
-      else if (mq.addListener) mq.addListener(onChange);
-    }
-    return () => {
-      if (mq) {
-        if (mq.removeEventListener) mq.removeEventListener('change', onChange);
-        else if (mq.removeListener) mq.removeListener(onChange);
-      }
-    };
   }, []);
 
   useEffect(() => {
@@ -45,8 +24,15 @@ export default function DarkModeToggle() {
       document.documentElement.classList.remove('theme-transition');
     }, 300);
 
-    document.documentElement.classList.toggle('dark', enabled);
-    localStorage.setItem('theme', enabled ? 'dark' : 'light');
+    // Persist only after initial mount (user action). The button is disabled
+    // by design in this UI, so this avoids writing a default on first load.
+    if (initialized.current) {
+      document.documentElement.classList.toggle('dark', enabled);
+      localStorage.setItem('theme', enabled ? 'dark' : 'light');
+    } else {
+      initialized.current = true;
+    }
+
     return () => clearTimeout(timer);
   }, [enabled]);
 
